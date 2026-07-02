@@ -16,8 +16,8 @@ default: &default
   adapter: postgresql
   encoding: unicode
   max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV.fetch("DB_USERNAME", "postgres") %>
-  password: <%= ENV.fetch("DB_PASSWORD", "") %>
+  username: postgres
+  password: ANJU2430
   host: localhost
 
 
