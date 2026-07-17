@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :purchase_requests, dependent: :destroy
+
   enum :role, {
     requester: 0,
     approver: 1,
