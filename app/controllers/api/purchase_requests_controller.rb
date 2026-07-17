@@ -5,6 +5,8 @@ class Api::PurchaseRequestsController < ApplicationController
 
   before_action :set_current_user
 
+  before_action :validate_amount_limit, only: [:create]
+
   after_action :log_response
 
   around_action :measure_time,
@@ -135,6 +137,24 @@ class Api::PurchaseRequestsController < ApplicationController
       "Index took #{elapsed.round(3)} seconds"
     )
   end
+
+  def validate_amount_limit
+  amount = params[:purchase_request][:amount].to_f
+
+  max_amount = APPROVAL_SETTINGS.dig(
+    :approval,
+    :max_amount
+  )
+
+  if amount > max_amount
+    render json: {
+      status: "failure",
+      message: "Amount exceeds the maximum allowed"
+    }
+
+    return
+  end
+end
 
   def purchase_request_params
     params.require(:purchase_request).permit(
