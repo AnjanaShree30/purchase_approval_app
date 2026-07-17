@@ -8,7 +8,13 @@ class PurchaseRequest < ApplicationRecord
     rejected: 3
   }
 
-  validates :title, presence: true
+# Reading the maximum title length from the YAML configuration
+# makes it easy to change without modifying the application code.
+validates :title,
+          presence: true,
+          length: {
+            maximum: APPROVAL_SETTINGS.dig(:approval, :max_title_length)
+          }
 
   validates :amount,
             presence: true,
